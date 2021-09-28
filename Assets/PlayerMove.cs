@@ -26,6 +26,8 @@ public class PlayerMove : MonoBehaviour
     public Sprite walkSprite;
     public Sprite wallSprite;
 
+    public static bool faceRight = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +42,16 @@ public class PlayerMove : MonoBehaviour
         
 
         if(onFloor && myBody.velocity.y != 0)
+        {
+            onFloor = false;
+        }
+
+        if (onFloor)
+        {
+            onWall = false;
+        }
+
+        if(onWall)
         {
             onFloor = false;
         }
@@ -78,7 +90,7 @@ public class PlayerMove : MonoBehaviour
                 anim.SetBool("On Wall", false);
                 anim.SetBool("Walking", true);
             }
-
+            faceRight = true;
             myRenderer.flipX = false;
             HandleLRMovement(speed);
             speedValue = 1;
@@ -93,6 +105,7 @@ public class PlayerMove : MonoBehaviour
                 anim.SetBool("On Wall", false);
                 anim.SetBool("Walking", true);
             }
+            faceRight = false;
             myRenderer.flipX = true;
             HandleLRMovement(-speed);
             speedValue = -1;
@@ -102,9 +115,10 @@ public class PlayerMove : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.W) && onFloor)
         {
-            anim.SetBool("Walking", false);
-            anim.SetBool("Jumping", true);
-            myBody.velocity = new Vector3(myBody.velocity.x, jumpHeight);
+        
+                anim.SetBool("Walking", false);
+                anim.SetBool("Jumping", true);
+                myBody.velocity = new Vector3(myBody.velocity.x, jumpHeight);
 
         }
 
